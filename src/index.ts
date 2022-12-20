@@ -10,6 +10,7 @@ type Task = {
 const list = document.querySelector<HTMLUListElement>("#list");
 const form = document.querySelector<HTMLFormElement>("#new-task-form");
 const input = document.querySelector<HTMLInputElement>("#new-task-title");
+const tasks: Task[] = []; // tasks is an array where each element is a Task type object
 
 form?.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -26,15 +27,22 @@ form?.addEventListener("submit", (e) => {
 
   //   console.log(newTask.title);
   //   console.log(newTask.createdAt);
+  tasks.push(newTask);
 
   addListItem(newTask);
+  input.value = ""; // clear input after submit
 });
 
 function addListItem(task: Task) {
   const item = document.createElement("li");
   const label = document.createElement("label");
   const checkbox = document.createElement("input");
+  checkbox.addEventListener("change", () => {
+    task.completed = checkbox.checked;
+    console.log(tasks);
+  });
   checkbox.type = "checkbox";
+  checkbox.checked = task.completed;
   label.append(checkbox, task.title);
   item.append(label);
   list?.append(item);
